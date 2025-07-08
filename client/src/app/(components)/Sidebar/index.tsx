@@ -77,7 +77,7 @@ const Sidebar = () => {
           }`}
       >
         <Image
-          src="./Images/Logo.jpeg"
+          src="/Images/Logo.jpeg"
           alt="kidwalks-logo"
           width={27}
           height={27}

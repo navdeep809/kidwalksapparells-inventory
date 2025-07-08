@@ -1,7 +1,7 @@
 "use client";
 
 import { Product, useCreateProductMutation, useGetProductsQuery } from "@/state/api";
-import { PlusCircleIcon, SearchIcon } from "lucide-react";
+import { PlusCircleIcon, SearchIcon, Edit, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Header from "@/app/(components)/Header";
 import Rating from "@/app/(components)/Rating";
@@ -9,7 +9,7 @@ import CreateProductModal from "./CreateProductModal";
 import Image from "next/image";
 
 type ProductFormData = {
-  productId?:string;
+  productId?: string;
   name: string;
   price: number;
   stockQuantity: number;
@@ -18,32 +18,32 @@ type ProductFormData = {
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [modal, setModal] = useState<{show:boolean,data?:Product}>({show:false});
-  const [products,setProducts] = useState<any[]>([]);
+  const [modal, setModal] = useState<{ show: boolean, data?: Product }>({ show: false });
+  const [products, setProducts] = useState<any[]>([]);
   const {
     data,
     isLoading,
     isError,
   } = useGetProductsQuery(searchTerm);
 
-useEffect(()=>{
-  if(data){
-    setProducts(data);
-  }
-   
-},[data])
+  useEffect(() => {
+    if (data) {
+      setProducts(data);
+    }
+
+  }, [data])
 
   const [createProduct] = useCreateProductMutation();
   const handleCreateProduct = async (productData: ProductFormData) => {
-    
-    if(productData?.productId){
+
+    if (productData?.productId) {
       // await update
-       setProducts(products?.map(p=>p.productId === productData?.productId ? productData: p))
-    }else{
+      setProducts(products?.map(p => p.productId === productData?.productId ? productData : p))
+    } else {
       await createProduct(productData);
-      setProducts([productData,...products])
+      setProducts([productData, ...products])
     }
-   
+
   };
 
   if (isLoading) {
@@ -58,14 +58,14 @@ useEffect(()=>{
     );
   }
 
-  const handleEdit = (edit:Product)=>{
-    setModal({show:true,data:edit});
+  const handleEdit = (edit: Product) => {
+    setModal({ show: true, data: edit });
   }
 
-  const handleDelete = (product: Product) =>{
+  const handleDelete = (product: Product) => {
 
     //await delete
-    setProducts(products?.filter(p=>p.productId !== product?.productId));
+    setProducts(products?.filter(p => p.productId !== product?.productId));
   }
 
   return (
@@ -88,7 +88,7 @@ useEffect(()=>{
         <Header name="Products" />
         <button
           className="flex items-center bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded"
-          onClick={() => setModal({show:true})}
+          onClick={() => setModal({ show: true })}
         >
           <PlusCircleIcon className="w-5 h-5 mr-2 !text-gray-200" /> Create
           Product
@@ -107,9 +107,8 @@ useEffect(()=>{
             >
               <div className="flex flex-col items-center">
                 <Image
-                  src={`https://s3-inventorymanagement.s3.us-east-2.amazonaws.com/product${
-                    Math.floor(Math.random() * 3) + 1
-                  }.png`}
+                  src={`https://s3-inventorymanagement.s3.us-east-2.amazonaws.com/product${Math.floor(Math.random() * 3) + 1
+                    }.png`}
                   alt={product.name}
                   width={150}
                   height={150}
@@ -129,8 +128,23 @@ useEffect(()=>{
                 )}
               </div>
 
-              <button onClick={()=>handleEdit(product)}>EDIT</button>
-              <button onClick={()=>handleDelete(product)}>DELETE</button>
+              {/* Action Buttons */}
+              <div className="flex justify-center gap-2 mt-4">
+                <button
+                  onClick={() => handleEdit(product)}
+                  className="flex items-center gap-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium transition-colors"
+                >
+                  <Edit className="w-4 h-4" />
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(product)}
+                  className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm font-medium transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete
+                </button>
+              </div>
             </div>
           ))
         )}
@@ -140,7 +154,7 @@ useEffect(()=>{
       <CreateProductModal
         product={modal.data}
         isOpen={modal.show}
-        onClose={() => setModal({show:false})}
+        onClose={() => setModal({ show: false })}
         onCreate={handleCreateProduct}
       />
     </div>
