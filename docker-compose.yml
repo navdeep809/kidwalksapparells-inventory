@@ -4,7 +4,7 @@ services:
       context: . # Build the image from the current directory (where Dockerfile is located)
       dockerfile: ./server/Dockerfile
     ports:
-      - "4000:3001" # Map host port 3000 to container port 3000
+      - "5001:3001" # Map host port 3000 to container port 3000
     depends_on:
       - db # Ensure the database service starts before the Node.js app
     environment:
@@ -15,11 +15,11 @@ services:
       context: .
       dockerfile: ./client/Dockerfile
     ports:
-      - "5000:3000"
+      - "8080:3000"
     depends_on:
       - server
     environment:
-      NEXT_PUBLIC_API_BASE_URL: http://server:3001
+      NEXT_PUBLIC_API_BASE_URL: http://3.144.25.103:5001
 
   # PostgreSQL database service
   db:
@@ -31,7 +31,7 @@ services:
     volumes:
       - db:/var/lib/postgresql/data # Persist database data in a named volume
     ports:
-      - 5432:5432
+      - 5433:5432
 
 volumes:
   db: # Define the named volume for database data persistence
