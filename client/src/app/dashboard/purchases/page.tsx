@@ -111,7 +111,7 @@ const Purchases = () => {
       >
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="w-full max-w-md rounded-lg bg-zinc-900 p-6 text-white shadow-xl">
+          <Dialog.Panel className="w-full max-w-md rounded-lg bg-zinc-900 p-6 text-white shadow-xl max-h-screen overflow-y-scroll">
             <div className="flex justify-between items-center mb-4">
               <Dialog.Title className="text-lg font-semibold">
                 New Purchase

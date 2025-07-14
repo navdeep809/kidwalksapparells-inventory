@@ -5,3 +5,4 @@ server/dist/
 client/.*
 server/.*
 client/.*
+node_modules/
