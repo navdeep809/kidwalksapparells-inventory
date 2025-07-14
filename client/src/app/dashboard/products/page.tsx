@@ -104,8 +104,8 @@ const Product = () => {
         className="relative z-50"
       >
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="w-full max-w-xl rounded-lg bg-zinc-900 p-6 text-white shadow-xl">
+        <div className="fixed inset-0 flex items-center justify-center p-4 ">
+          <Dialog.Panel className="w-full max-w-xl rounded-lg bg-zinc-900 p-6 text-white shadow-xl max-h-screen overflow-y-scroll">
             <div className="flex justify-between items-center mb-4">
               <Dialog.Title className="text-lg font-semibold">
                 Add New Product
@@ -228,7 +228,7 @@ const Product = () => {
                     <div className="bg-zinc-800 rounded-lg px-4 py-3 mt-1">
                       <Field
                         name="category"
-                        placeholder="e.g. Electronics"
+                        placeholder="e.g. Shoes"
                         className="bg-transparent w-full outline-none text-white"
                       />
                     </div>
