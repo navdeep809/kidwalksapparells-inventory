@@ -12,7 +12,7 @@ export default function DashboardLayout({
 
   // You can't use `localStorage` directly in a server component, so instead:
   if (!isAuthenticated && typeof window !== "undefined") {
-    redirect("/login"); // redirect to login if not authenticated
+    redirect("/auth/login"); // redirect to login if not authenticated
   }
   return (
     <div className="flex flex-row">
