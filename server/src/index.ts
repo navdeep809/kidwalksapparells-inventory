@@ -4,13 +4,17 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-/* ROUTE IMPORTS */
-import dashboardRoutes from "./routes/dashboardRoutes";
+
+// ROUTES
 import productRoutes from "./routes/productRoutes";
 import userRoutes from "./routes/userRoutes";
+import authRoutes from "./routes/authRoutes";
 import expenseRoutes from "./routes/expenseRoutes";
+import statisticsRoutes from "./routes/statisticsRoutes";
+import customerRoutes from "./routes/customerRoutes";
+import orderRoutes from "./routes/orderRoutes";
+import purchaseRoutes from "./routes/purchaseRoutes";
 
-/* CONFIGURATIONS */
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -21,13 +25,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-/* ROUTES */
-app.use("/dashboard", dashboardRoutes); // http://localhost:8000/dashboard
-app.use("/products", productRoutes); // http://localhost:8000/products
-app.use("/users", userRoutes); // http://localhost:8000/users
-app.use("/expenses", expenseRoutes); // http://localhost:8000/expenses
+// Route bindings
+app.use("/auth", authRoutes);
+app.use("/products", productRoutes);
+app.use("/users", userRoutes);
+// app.use("/dashboard", dashboardRoutes);
+app.use("/expenses", expenseRoutes);
+app.use("/customers", customerRoutes);
+app.use("/orders", orderRoutes);
+app.use("/purchases", purchaseRoutes);
+app.use("/statistics", statisticsRoutes);
 
-/* SERVER */
 const port = Number(process.env.PORT) || 3001;
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server running on port ${port}`);
