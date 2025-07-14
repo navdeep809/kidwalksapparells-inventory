@@ -1,11 +1,20 @@
-import { Router } from "express";
-import { createProduct, getProducts, getProduct, updateProduct } from "../controllers/productController";
+import express from "express";
+import {
+  getProduct,
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "../controllers/productController";
+import { upload } from "../middlewares/multer";
+import { requireAuth } from "../middlewares/requireAuth";
 
-const router = Router();
+const router = express.Router();
 
-router.get("/:productId", getProduct);
-router.get("/", getProducts);
-router.post("/", createProduct);
-router.patch("/", updateProduct);
+router.get("/", requireAuth, getProducts);
+router.get("/:productId", requireAuth, getProduct);
+router.post("/", requireAuth, upload.single("image"), createProduct);
+router.put("/:productId", requireAuth, upload.single("image"), updateProduct);
+router.delete("/:productId", requireAuth, deleteProduct);
 
 export default router;

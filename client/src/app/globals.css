@@ -14,9 +14,10 @@ body,
 .app {
   height: 100%;
   width: 100%;
-  @apply text-sm;
-  @apply bg-gray-500;
-  @apply text-gray-900;
+}
+
+body {
+  @apply bg-zinc-950 text-white;
 }
 
 @media (min-width: 768px) {

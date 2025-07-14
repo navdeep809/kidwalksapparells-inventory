@@ -1,64 +1,65 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
-export const getUser = async (req: Request, res: Response): Promise<void> => {
-  try{
-    let userld  = req.params.userId;
-    const user = await prisma.users.findUnique({
-      where: {userId : userld},
-    })
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: "Error retrieving user" });
-  }
-};
-
-export const getUsers = async (req: Request, res: Response): Promise<void> => {
+export const getUsers = async (_req: Request, res: Response) => {
   try {
-    const users = await prisma.users.findMany();
+    const users = await prisma.user.findMany();
     res.json(users);
-  } catch (error) {
-    res.status(500).json({ message: "Error retrieving users" });
+  } catch {
+    res.status(500).json({ error: "Failed to fetch users." });
   }
 };
 
-export const createUser = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getUser = async (req: Request, res: Response) => {
   try {
-    const { userId, name, email, role } = req.body;
-    const product = await prisma.users.create({
+    const { userId } = req.params;
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) return res.status(404).json({ error: "User not found." });
+    res.json(user);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch user." });
+  }
+};
+
+export const createUser = async (req: Request, res: Response) => {
+  try {
+    const { name, email, role, password } = req.body;
+
+    const exists = await prisma.user.findUnique({ where: { email } });
+    if (exists) return res.status(409).json({ error: "Email already exists." });
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    const user = await prisma.user.create({
       data: {
-        userId,
         name,
         email,
         role,
+        password: hashed,
       },
     });
-    res.status(201).json(product);
+
+    res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ message: "Error creating user" });
+    res.status(400).json({ error: "Failed to create user." });
   }
 };
 
-export const updateUser = async (
-  req: Request, 
-  res: Response): Promise<void> => {
+export const updateUser = async (req: Request, res: Response) => {
   try {
-    const { userId, name, email, role } = req.body;
-    const product = await prisma.users.update({
-      where: { userId: userId},
-      data: {
-        name,
-        email,
-        role,
-      }
+    const { userId } = req.params;
+    const { name, email, role } = req.body;
+
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { name, email, role },
     });
-    res.status(201).json(product);
-  } catch (error) {
-    res.status(500).json({ message: "Error creating user" });
+
+    res.json(user);
+  } catch {
+    res.status(400).json({ error: "Failed to update user." });
   }
 };

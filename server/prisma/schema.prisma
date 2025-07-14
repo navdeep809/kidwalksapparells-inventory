@@ -13,77 +13,88 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  userId String @id
-  name   String
-  email  String
-  role   String @default("Basic")
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password String
+  role     String  @default("Sales_Person")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Products {
-  productId     String      @id
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
+  email     String?  @unique
+  phone     String?
+  address   String?
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders    Order[]
+}
+
+model Product {
+  id            String      @id @default(uuid())
   name          String
+  sku           String      @unique
+  category      String?
+  description   String?
   price         Float
-  rating        Float?
   stockQuantity Int
-  Sales         Sales[]
-  Purchases     Purchases[]
   imageUrl      String?
+  rating        Float?
+  isDeleted     Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  purchases     Purchase[]
+  orderItems    OrderItem[]
 }
 
-model Sales {
-  saleId      String   @id
-  productId   String
-  timestamp   DateTime
-  quantity    Int
-  unitPrice   Float
-  totalAmount Float
-  product     Products @relation(fields: [productId], references: [productId])
-}
-
-model Purchases {
-  purchaseId String   @id
+model Purchase {
+  id         String   @id @default(uuid())
   productId  String
-  timestamp  DateTime
   quantity   Int
   unitCost   Float
   totalCost  Float
-  product    Products @relation(fields: [productId], references: [productId])
+  note       String?
+  timestamp  DateTime @default(now())
+
+  product    Product  @relation(fields: [productId], references: [id])
 }
 
-model Expenses {
-  expenseId String   @id
+model Order {
+  id            String      @id @default(uuid())
+  customerId    String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  status        String      @default("pending") // e.g. pending, completed, cancelled
+  paymentStatus String      @default("unpaid")  // e.g. unpaid, paid, refunded
+  total         Float
+
+  customer      Customer?   @relation(fields: [customerId], references: [id])
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  unitPrice Float
+  total     Float
+
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Expense {
+  id        String   @id @default(uuid())
   category  String
   amount    Float
-  timestamp DateTime
-}
-
-model SalesSummary {
-  salesSummaryId   String   @id
-  totalValue       Float
-  changePercentage Float?
-  date             DateTime
-}
-
-model PurchaseSummary {
-  purchaseSummaryId String   @id
-  totalPurchased    Float
-  changePercentage  Float?
-  date              DateTime
-}
-
-model ExpenseSummary {
-  expenseSummaryId  String              @id
-  totalExpenses     Float
-  date              DateTime
-  ExpenseByCategory ExpenseByCategory[]
-}
-
-model ExpenseByCategory {
-  expenseByCategoryId String         @id
-  expenseSummaryId    String
-  category            String
-  amount              BigInt
-  date                DateTime
-  expenseSummary      ExpenseSummary @relation(fields: [expenseSummaryId], references: [expenseSummaryId])
+  note      String?
+  timestamp DateTime @default(now())
 }
