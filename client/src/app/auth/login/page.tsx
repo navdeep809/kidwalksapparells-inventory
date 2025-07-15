@@ -44,8 +44,8 @@ export default function Login() {
           <Form className="flex flex-col gap-5 max-w-[32rem] w-full p-5 md:bg-zinc-900 text-white md:shadow-md md:rounded-lg">
             <div className="flex flex-col">
               <h2 className="text-3xl font-medium text-center">KIDWALKSAPPARELLS</h2>
-              <div className="text-zinc-400 font-medium">
-                Sign in to your account to access your inventory dashboard.
+              <div className="text-zinc-400 font-medium text-center">
+                Sign in to your account to access dashboard.
               </div>
             </div>
 
