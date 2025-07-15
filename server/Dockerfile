@@ -8,9 +8,9 @@ COPY /server/package*.json /server/ecosystem.config.js ./
 
 RUN npm install
 
-COPY / .
-COPY /assets ./assets
-COPY /prisma/ ./prisma
+COPY /server/ .
+COPY /server/assets ./assets
+COPY /server/prisma/ ./prisma
 
 RUN npx prisma generate
 RUN npm run seed
