@@ -42,7 +42,7 @@ const ProductDetails = () => {
     try {
       await deleteProduct(productId as string).unwrap();
       toast.success("Product deleted successfully");
-      router.push("/products");
+      router.push("/dashboard/products");
     } catch (err) {
       console.error("Delete failed", err);
       toast.error("Failed to delete product");
