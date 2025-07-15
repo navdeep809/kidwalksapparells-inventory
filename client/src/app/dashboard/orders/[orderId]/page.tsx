@@ -31,7 +31,7 @@ const OrderProcessPage = () => {
     try {
       await processOrder(orderId as string).unwrap();
       toast.success("Order marked as processed");
-      router.push("/orders");
+      router.push("/dashboard/orders");
     } catch (err) {
       console.error("Error processing order:", err);
       toast.error("Failed to process order");
