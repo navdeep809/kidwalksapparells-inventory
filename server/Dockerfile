@@ -13,7 +13,6 @@ COPY /server/assets ./assets
 COPY /server/prisma/ ./prisma
 
 RUN npx prisma generate
-RUN npm run seed
 RUN npm run build
 
 EXPOSE 3001

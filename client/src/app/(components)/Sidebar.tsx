@@ -52,7 +52,7 @@ export default function Sidebar() {
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        {!collapsed && <h1 className="text-xl font-bold">Inventory</h1>}
+        {!collapsed && <h1 className="text-xl font-bold text-center">Kidwalksapparels</h1>}
         <button
           className="p-2 hover:bg-zinc-800 rounded"
           onClick={() => setCollapsed(!collapsed)}
