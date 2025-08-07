@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+=======
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+>>>>>>> 082c452bdeffc1d3557bebbd3b69a0b9e0cdef7c
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,10 +20,17 @@ model User {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
+<<<<<<< HEAD
   role      String   @default("Sales_Person")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   password  String
+=======
+  password String
+  role     String  @default("Sales_Person")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+>>>>>>> 082c452bdeffc1d3557bebbd3b69a0b9e0cdef7c
 }
 
 model Customer {
@@ -26,6 +42,10 @@ model Customer {
   isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+<<<<<<< HEAD
+=======
+
+>>>>>>> 082c452bdeffc1d3557bebbd3b69a0b9e0cdef7c
   orders    Order[]
 }
 
@@ -42,6 +62,7 @@ model Product {
   isDeleted     Boolean     @default(false)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+<<<<<<< HEAD
   orderItems    OrderItem[]
   purchases     Purchase[]
 }
@@ -55,6 +76,23 @@ model Purchase {
   note      String?
   timestamp DateTime @default(now())
   product   Product  @relation(fields: [productId], references: [id])
+=======
+
+  purchases     Purchase[]
+  orderItems    OrderItem[]
+}
+
+model Purchase {
+  id         String   @id @default(uuid())
+  productId  String
+  quantity   Int
+  unitCost   Float
+  totalCost  Float
+  note       String?
+  timestamp  DateTime @default(now())
+
+  product    Product  @relation(fields: [productId], references: [id])
+>>>>>>> 082c452bdeffc1d3557bebbd3b69a0b9e0cdef7c
 }
 
 model Order {
@@ -62,22 +100,39 @@ model Order {
   customerId    String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+<<<<<<< HEAD
   status        String      @default("pending")
   paymentStatus String      @default("unpaid")
   total         Float
+=======
+  status        String      @default("pending") // e.g. pending, completed, cancelled
+  paymentStatus String      @default("unpaid")  // e.g. unpaid, paid, refunded
+  total         Float
+
+>>>>>>> 082c452bdeffc1d3557bebbd3b69a0b9e0cdef7c
   customer      Customer?   @relation(fields: [customerId], references: [id])
   items         OrderItem[]
 }
 
 model OrderItem {
+<<<<<<< HEAD
   id        String  @id @default(uuid())
+=======
+  id        String   @id @default(uuid())
+>>>>>>> 082c452bdeffc1d3557bebbd3b69a0b9e0cdef7c
   orderId   String
   productId String
   quantity  Int
   unitPrice Float
   total     Float
+<<<<<<< HEAD
   order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
+=======
+
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+>>>>>>> 082c452bdeffc1d3557bebbd3b69a0b9e0cdef7c
 }
 
 model Expense {
@@ -86,4 +141,8 @@ model Expense {
   amount    Float
   note      String?
   timestamp DateTime @default(now())
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 082c452bdeffc1d3557bebbd3b69a0b9e0cdef7c

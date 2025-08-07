@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Inventory Management System (Development Code)
 
 ## Project Overview
@@ -229,3 +230,6 @@ After seeding, you can log in with:
 ## 10. License
 
 MIT
+=======
+# kidwalksapparells-inventory
+>>>>>>> 082c452bdeffc1d3557bebbd3b69a0b9e0cdef7c
