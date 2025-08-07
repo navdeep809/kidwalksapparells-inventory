@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      String   @default("Sales_Person")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  password  String
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
+  email     String?  @unique
+  phone     String?
+  address   String?
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Product {
+  id            String      @id @default(uuid())
+  name          String
+  sku           String      @unique
+  category      String?
+  description   String?
+  price         Float
+  stockQuantity Int
+  imageUrl      String?
+  rating        Float?
+  isDeleted     Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  orderItems    OrderItem[]
+  purchases     Purchase[]
+}
+
+model Purchase {
+  id        String   @id @default(uuid())
+  productId String
+  quantity  Int
+  unitCost  Float
+  totalCost Float
+  note      String?
+  timestamp DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id            String      @id @default(uuid())
+  customerId    String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  status        String      @default("pending")
+  paymentStatus String      @default("unpaid")
+  total         Float
+  customer      Customer?   @relation(fields: [customerId], references: [id])
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  unitPrice Float
+  total     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Expense {
+  id        String   @id @default(uuid())
+  category  String
+  amount    Float
+  note      String?
+  timestamp DateTime @default(now())
+}
